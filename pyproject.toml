@@ -17,5 +17,6 @@ tests = ["pytest"]
 
 [tool.maturin]
 python-source = "python"
+module-name = "fast_graphql._fast_graphql"
 bindings = "pyo3"
 features = ["pyo3/extension-module"]

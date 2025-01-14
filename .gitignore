@@ -169,3 +169,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# generated files
+/python/fast_graphql/_fast_graphql.pyi

@@ -4,8 +4,13 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "fast_graphql"
-crate-type = ["cdylib"]
+name = "_fast_graphql"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "stub_gen"
+doc = false
 
 [dependencies]
 pyo3 = "0.23.4"
+pyo3-stub-gen = "0.6.2"

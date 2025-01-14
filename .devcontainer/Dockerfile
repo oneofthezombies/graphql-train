@@ -52,7 +52,8 @@ RUN curl -fsSL https://pyenv.run | bash && \
     echo "pyenv init - fish | source" >> "$FISH_CONFIG_FILE" && \
     pyenv install "$PYTHON_VERSION" && \
     pyenv global "$PYTHON_VERSION"
-RUN pip install maturin==1.8.1
+RUN set -Ux LD_LIBRARY_PATH (pyenv prefix)/lib "$LD_LIBRARY_PATH" && \
+    pip install maturin==1.8.1
 
 RUN echo "alias ll='ls -alF'" >> "$FISH_CONFIG_FILE"
 RUN echo "functions --erase fish_greeting" >> "$FISH_CONFIG_FILE"

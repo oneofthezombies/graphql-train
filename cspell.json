@@ -1,11 +1,13 @@
 {
   "enabledFileTypes": {
-    "rust": true,
-    "python": true
+    "python": true,
+    "rust": true
   },
   "ignorePaths": [
     ".devcontainer/devcontainer.json",
-    ".devcontainer/Dockerfile"
+    ".devcontainer/Dockerfile",
+    "cspell.json",
+    "pyproject.toml"
   ],
   "words": ["pyfunction", "pymodule"]
 }
