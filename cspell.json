@@ -7,5 +7,5 @@
     ".devcontainer/devcontainer.json",
     ".devcontainer/Dockerfile"
   ],
-  "words": []
+  "words": ["pyfunction", "pymodule"]
 }

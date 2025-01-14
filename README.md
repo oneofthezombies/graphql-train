@@ -1,1 +1,1 @@
-# graphql-train
+# Fast GraphQL
