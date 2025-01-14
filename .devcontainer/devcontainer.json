@@ -4,6 +4,10 @@
       "extensions": [
         "donjayamanne.githistory",
         "esbenp.prettier-vscode",
+        "ms-python.black-formatter",
+        "ms-python.debugpy",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
         "rust-lang.rust-analyzer",
         "streetsidesoftware.code-spell-checker",
         "tamasfe.even-better-toml",
@@ -22,6 +26,10 @@
         },
         "[markdown]": {
           "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        },
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
           "editor.formatOnSave": true
         },
         "[rust]": {
