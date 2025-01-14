@@ -12,25 +12,48 @@ RUN apt update && \
     apt install -y \
         git \
         xdg-utils \
+        build-essential \
+        libssl-dev \
+        zlib1g-dev \
+        libbz2-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        libncursesw5-dev \
+        xz-utils \
+        tk-dev \
+        libxml2-dev \
+        libxmlsec1-dev \
+        libffi-dev \
+        liblzma-dev \
         fish && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
 USER vscode
+
 ENV HOME="/home/vscode"
-ENV FISH_CONFIG_DIR="${HOME}/.config/fish"
-RUN mkdir -p "${FISH_CONFIG_DIR}"
+ENV FISH_CONFIG_DIR="$HOME/.config/fish"
+ENV FISH_CONFIG_FILE="$FISH_CONFIG_DIR/config.fish"
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-ENV PATH="${HOME}/.cargo/bin:${PATH}"
+RUN mkdir -p "$FISH_CONFIG_DIR"
+
+SHELL ["/usr/bin/fish", "-c"]
+
 ENV RUST_VERSION="1.83.0"
-RUN rustup install "${RUST_VERSION}" && \
-    rustup default "${RUST_VERSION}"
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    fish_add_path "$HOME/.cargo/bin" && \
+    rustup install "$RUST_VERSION" && \
+    rustup default "$RUST_VERSION"
 
-# RUN curl -fsSL https://pyenv.run | bash
+ENV PYTHON_VERSION="3.13.1"
+RUN curl -fsSL https://pyenv.run | bash && \
+    set -Ux PYENV_ROOT "$HOME/.pyenv" && \
+    fish_add_path "$PYENV_ROOT/bin" && \
+    echo "pyenv init - fish | source" >> "$FISH_CONFIG_FILE" && \
+    pyenv install "$PYTHON_VERSION" && \
+    pyenv global "$PYTHON_VERSION"
 
-ENV FISH_CONFIG_FILE="${FISH_CONFIG_DIR}/config.fish"
-RUN echo "alias ll='ls -alF'" >> "${FISH_CONFIG_FILE}"
-RUN echo "functions --erase fish_greeting" >> "${FISH_CONFIG_FILE}"
+RUN echo "alias ll='ls -alF'" >> "$FISH_CONFIG_FILE"
+RUN echo "functions --erase fish_greeting" >> "$FISH_CONFIG_FILE"
     
 WORKDIR /work
