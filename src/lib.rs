@@ -1,5 +1,6 @@
 use pyo3::prelude::*;
-use pyo3_stub_gen::{define_stub_info_gatherer, derive::gen_stub_pyfunction};
+use pyo3_stub_gen::define_stub_info_gatherer;
+use pyo3_stub_gen::derive::gen_stub_pyfunction;
 
 /// Formats the sum of two numbers as string.
 #[gen_stub_pyfunction]
