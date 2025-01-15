@@ -41,13 +41,13 @@
           "editor.formatOnSave": true
         },
         "editor.rulers": [80],
-        "terminal.integrated.defaultProfile.linux": "fish",
         "rust-analyzer.rustfmt.extraArgs": [
           "--config",
           "imports_granularity=Item",
           "--config",
           "group_imports=StdExternalCrate"
-        ]
+        ],
+        "terminal.integrated.defaultProfile.linux": "fish"
       }
     }
   },
