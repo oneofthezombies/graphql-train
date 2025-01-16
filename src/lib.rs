@@ -11,31 +11,26 @@ use pyo3::prelude::*;
 use pyo3::types::PyString;
 use pyo3_async_runtimes::tokio::future_into_py;
 use pyo3_stub_gen::define_stub_info_gatherer;
+use pyo3_stub_gen::derive::gen_stub_pyclass;
+use pyo3_stub_gen::derive::gen_stub_pymethods;
 
+#[gen_stub_pyclass]
 #[pyclass]
 struct Schema {
     inner: Arc<dynamic::Schema>,
 }
 
+#[gen_stub_pymethods]
 #[pymethods]
 impl Schema {
     #[new]
     fn new() -> PyResult<Self> {
-        let builder = dynamic::Schema::build(
-            r"{
-            type Query {
-                hello: String!
-            }
-        }",
-            None,
-            None,
-        );
         let query = Object::new("Query").field(Field::new(
             "hello",
             TypeRef::named_nn(TypeRef::STRING),
             |_ctx| FieldFuture::new(async { Ok(Some(Value::from("Hello, FastGraphQL!"))) }),
         ));
-        let builder = builder.register(query);
+        let builder = dynamic::Schema::build(query.type_name(), None, None).register(query);
         let schema = builder
             .finish()
             .map_err(|e| PyException::new_err(format!("{}", e)))?;
@@ -44,15 +39,17 @@ impl Schema {
         })
     }
 
-    fn execute<'py>(&self, request: &Bound<'py, PyString>) -> PyResult<Bound<PyAny>> {
-        let a = request.to_string();
-        future_into_py(request.py(), async {
-            let response = self.inner.execute(a).await;
-            let a = format!("{:?}", response);
-            Python::with_gil(|py| {
-                let b: Bound<'py, PyString> = PyString::new(request.py(), a.as_str());
-                Ok(b)
-            })
+    fn execute<'py>(
+        &self,
+        py: Python<'py>,
+        request: &Bound<'py, PyString>,
+    ) -> PyResult<Bound<'py, PyAny>> {
+        let request_str = request.to_string();
+        let schema = self.inner.clone();
+        future_into_py(py, async move {
+            let response = schema.execute(request_str).await;
+            let debug_str = format!("{:?}", response);
+            Python::with_gil(|py| Ok(PyString::new(py, &debug_str).to_object(py)))
         })
     }
 }
