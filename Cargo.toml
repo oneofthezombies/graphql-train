@@ -12,5 +12,7 @@ name = "stub_gen"
 doc = false
 
 [dependencies]
+async-graphql = { version = "7.0.13", features = ["dynamic-schema"] }
 pyo3 = { version = "0.23.4", features = ["abi3-py39", "experimental-async"] }
+pyo3-async-runtimes = { version = "0.23.0", features = ["tokio-runtime"] }
 pyo3-stub-gen = "0.6.2"

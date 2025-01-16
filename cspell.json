@@ -9,5 +9,5 @@
     "cspell.json",
     "pyproject.toml"
   ],
-  "words": ["pyfunction", "pymodule"]
+  "words": ["pyclass", "pyfunction", "pymethods", "pymodule"]
 }
